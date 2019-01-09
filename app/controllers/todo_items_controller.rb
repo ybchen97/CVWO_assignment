@@ -1,10 +1,11 @@
 class TodoItemsController < ApplicationController
-  before_action :set_todo_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_todo_item, only: [:show, :edit, :update, :destroy, :complete, :uncomplete]
 
   # GET /todo_items
   # GET /todo_items.json
   def index
-    @todo_items = TodoItem.all
+    @incomplete_todo_items = TodoItem.where(complete: false)
+    @complete_todo_items = TodoItem.where(complete: true)
   end
 
   # GET /todo_items/1
@@ -59,6 +60,16 @@ class TodoItemsController < ApplicationController
       format.html { redirect_to todo_items_url, notice: 'Todo item was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def complete
+    @todo_item.update(complete: true)
+    redirect_to todo_items_path
+  end
+
+  def uncomplete
+    @todo_item.update(complete: false)
+    redirect_to todo_items_path
   end
 
   private
