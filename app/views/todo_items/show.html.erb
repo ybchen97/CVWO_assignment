@@ -10,5 +10,10 @@
   <%= @todo_item.description %>
 </p>
 
+<p>
+  <strong>Tags:</strong>
+  <%= raw @todo_item.tags.present? ? @todo_item.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ') : 'No Tags' %>
+</p>
+
 <%= link_to 'Edit', edit_todo_item_path(@todo_item) %> |
 <%= link_to 'Back', todo_items_path %>

@@ -4,8 +4,14 @@ class TodoItemsController < ApplicationController
   # GET /todo_items
   # GET /todo_items.json
   def index
-    @incomplete_todo_items = TodoItem.where(complete: false)
-    @complete_todo_items = TodoItem.where(complete: true)
+    TodoItem.delete_empty_tags
+    if params[:tag]
+      @incomplete_todo_items = TodoItem.tagged_with(params[:tag]).where(complete: false).order(updated_at: :desc)
+      @complete_todo_items = TodoItem.tagged_with(params[:tag]).where(complete: true).order(updated_at: :desc)
+    else
+      @incomplete_todo_items = TodoItem.where(complete: false).order(updated_at: :desc)
+      @complete_todo_items = TodoItem.where(complete: true).order(updated_at: :desc)
+    end
   end
 
   # GET /todo_items/1
@@ -62,6 +68,22 @@ class TodoItemsController < ApplicationController
     end
   end
 
+  def destroy_completed
+    completed = TodoItem.where(complete: true).map(&:id)
+    if completed.empty?
+      respond_to do |format|
+        format.html { redirect_to todo_items_url, notice: 'No completed todo items to destroy.' }
+        format.json { head :no_content }
+      end
+    else
+      TodoItem.destroy(completed)
+      respond_to do |format|
+        format.html { redirect_to todo_items_url, notice: 'All completed todo items were successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   def complete
     @todo_item.update(complete: true)
     redirect_to todo_items_path
@@ -80,6 +102,6 @@ class TodoItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def todo_item_params
-      params.require(:todo_item).permit(:title, :description)
+      params.require(:todo_item).permit(:title, :description, :all_tags)
     end
 end
