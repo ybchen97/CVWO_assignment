@@ -16,8 +16,9 @@ class TodoItem < ApplicationRecord
   
   # setter
   def all_tags=(names)
-    self.tags = names.split(/, |,| /).map do |name|
-      Tag.where(name: name).first_or_create!
+    self.tags = names.split(/, |,/).map do |name|
+      clean_name = name.downcase
+      Tag.where(name: clean_name).first_or_create!
     end
   end
 
