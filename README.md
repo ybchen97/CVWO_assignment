@@ -1,4 +1,16 @@
-# README
+# CVWO Assignment
+
+Name: Chen Yuan Bo
+
+Matric No.: A0183156A
+
+Final write-up is in the root directory called cvwo_final_assignment.pdf
+
+
+### Rails Start Up Screen
+![picture](misc/rails_startup_screen.png)
+
+
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
