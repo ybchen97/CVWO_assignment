@@ -10,7 +10,7 @@ Final write-up is in the root directory called cvwo_final_assignment.pdf
 
 
 ### Rails Start Up Screen
-![picture](misc/rails_startup_screen.png)
+![picture](mid-submission/rails_startup_screen.png)
 
 
 
